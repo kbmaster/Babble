@@ -1,0 +1,95 @@
+import java_cup.runtime.*;
+import java.util.*;
+   
+parser code {:
+    
+    	public void report_error(String message, Object info) 
+	{
+   
+                StringBuilder m = new StringBuilder("Error");
+    
+	        if (info instanceof java_cup.runtime.Symbol) 
+		{
+                        java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+   
+                        if (s.left >= 0) {                
+                                m.append(" in line "+(s.left+1));   
+                
+		        if (s.right >= 0)                    
+                                m.append(", column "+(s.right+1));
+            	}
+        }
+   
+        m.append(" : "+message);
+        System.err.println(m);
+    }
+   
+     public void report_fatal_error(String message, Object info) {
+        report_error(message, info);
+        System.exit(1);
+    }
+:};
+   
+
+/////////////////////////////////////////////////////////////////////////////
+
+
+terminal String TERMINAL,REGEX,ARROW,PROB,EOL,PIPE,NOTERMINAL,IGNORE;
+terminal Double PROBVAL;
+
+non terminal BabbleGrammar  GRAMMAR;
+non terminal String HEAD;
+non terminal List  TAILS;
+non terminal Tail  TAIL;
+nonterminal  List SIMBOLS;
+nonterminal  BabbleSymbol SIMBOL;
+non terminal Object EXP;
+non terminal Object IGNORE_CHARS;
+
+
+
+GRAMMAR		::=	HEAD:h ARROW TAILS:t EOL {:RESULT= new BabbleGrammar(); RESULT.add(h,t);:} | 
+			GRAMMAR:g HEAD:h ARROW TAILS:t EOL {: g.add(h,t); RESULT=g;:};
+
+HEAD  		::= 	NOTERMINAL:n {:RESULT= new String(n);:};
+
+TAILS		::=	TAIL:t {:RESULT=new ArrayList(); RESULT.add(t);:} | 
+			TAILS:ts PIPE TAIL:t {:ts.add(t); RESULT=ts;:};
+
+TAIL		::=     REGEX:r {: RESULT=new RegexTail(r);:} | 
+			REGEX:r PROB PROBVAL:p {: RESULT=new RegexTail(r,p);:}|
+			SIMBOLS:s {: RESULT= new SymbolTail(s);:}|
+			SIMBOLS:s PROB PROBVAL:p {: RESULT= new SymbolTail(s,p);:};
+
+SIMBOLS  	::= 	SIMBOL:s {:RESULT=new ArrayList(); RESULT.add(s);:} | 
+			SIMBOLS:ss  SIMBOL:s {:ss.add(s); RESULT=ss;:};
+
+SIMBOL  	::= 	TERMINAL:t {:RESULT=new Terminal(t);:} | 
+			NOTERMINAL:n {:RESULT=new NoTerminal(n);:};
+
+//ignore
+PRODUCTION 	::= 	IGNORE ARROW IGNORE_CHARS EOL;
+IGNORE_CHARS	::= 	TERMINAL | IGNORE_CHARS PIPE TERMINAL;	
+
+
+
+
+/*
+GRAMMAR         ::=     HEAD ARROW TAILS EOL |
+                        GRAMMAR HEAD ARROW TAILS EOL;
+
+HEAD            ::=     NOTERMINAL;
+
+TAILS           ::=     TAIL |  TAILS PIPE TAIL;
+
+TAIL            ::=     REGEX |  REGEX PROB PROBVAL|
+                        SIMBOLS| SIMBOLS PROB PROBVAL;
+
+SIMBOLS         ::=     SIMBOL| SIMBOLS SIMBOL;
+
+SIMBOL          ::=     TERMINAL | NOTERMINAL;
+
+//ignore
+PRODUCTION      ::=     IGNORE ARROW IGNORE_CHARS EOL;
+IGNORE_CHARS    ::=     TERMINAL | IGNORE_CHARS PIPE TERMINAL;
+*/
