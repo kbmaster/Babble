@@ -5,7 +5,7 @@ class BabbleGrammar
 	private Map<String,List<Tail>> productions;
 	private String start;	
 		
-	public void BabbleGrammar()
+	public  BabbleGrammar()
 	{
 		this.productions= new HashMap<String,List<Tail>>();
 	}
