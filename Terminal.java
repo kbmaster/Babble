@@ -4,7 +4,12 @@ class Terminal extends BabbleSymbol
 	
 	public Terminal(String v)
 	{
-		this.value=v;
+		this.value=v.replace("'","");
+	}
+	
+	public String getValue()
+	{
+		return this.value;
 	} 
 
 	public AST produce()

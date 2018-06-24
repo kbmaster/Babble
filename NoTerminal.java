@@ -6,9 +6,14 @@ class NoTerminal extends BabbleSymbol
 		this.value=v;
         }
 
+	public String getValue()
+	{
+		return this.value;
+	}
+
         public AST produce()
         { 
-                return new AST("2");
+                return new AST(this.value);
         }
 }
 

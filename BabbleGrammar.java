@@ -22,7 +22,6 @@ class BabbleGrammar
 	
 		for(Tail p : prods)
 		l.add(p);
-
 	}
 
 	public String getStart()
@@ -30,14 +29,47 @@ class BabbleGrammar
 		return this.start;
 	}
 
-	public List<Tail> getProdStartWith(String head)
+
+	private  Tail getProdStartWith(String head)
 	{
-		return this.productions.get(head);
+		List <Tail> prods = this.productions.get(head);		
+		
+		//aca hay que normalizar las probabilidades de ocurrencia
+		//por el momento devuelvo una al azar de las que existen 		
+		
+		int min = 0;
+		int max = prods.size()-1;
+		int range = (max - min) + 1;     
+		int r =(int)(Math.random() * range) + min;
+
+		return prods.get(r); 
 	}
 
-	public void test()
+
+	public AST produce()
 	{
-		System.out.println("BabbleGrammar->"+this.productions.size());
+		return this.produceSymbol(this.start);		
 	}
+
+
+	private AST produceSymbol(String symbol)
+	{
+		Tail prod = this.getProdStartWith(symbol);
+		List <BabbleSymbol> simbols = prod.produce();
+		AST node= new AST(symbol);
+
+		for(BabbleSymbol s:simbols)
+		{
+			if(s.getClass().getName().equals("Terminal"))
+			node.add(s.produce());
+			else
+			node.add(this.produceSymbol(s.getValue()));
+		}
+
+		return node;
+	}
+
+
+
 
 }

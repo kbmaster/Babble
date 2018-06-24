@@ -32,7 +32,11 @@ public class Babble {
 		B = Babble.parseGrammar("");
 	}
 
-	B.test();
+	//AST from BabbleGrammar
+	AST A = B.produce();
+
+	//cadena from AST
+	System.out.println(A.produce());
 
     } catch (Exception e) {
           e.printStackTrace();
