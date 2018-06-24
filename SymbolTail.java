@@ -1,6 +1,6 @@
 import java.util.*;
 
-class SymbolTail extends Tail
+class SymbolTail implements Tail
 { 
         private List <BabbleSymbol> symbols;
 	private Double probability;

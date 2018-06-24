@@ -10,10 +10,10 @@ all: test
 test: out.txt
 	@(diff out.txt out.ok && echo "Test OK!") || echo "Test failed!"
 
-out.txt: Main.class test.txt
+out.txt: Babble.class test.txt
 	$(JAVA) -cp $(CP) Main test.txt > out.txt
 
-Main.class: *.java
+Babble.class: Lexer.java parser.java *.java 
 
 %.class: %.java
 	$(JAVAC) -cp $(CP) $^
@@ -24,11 +24,11 @@ Lexer.java: lbabble.jflex
 parser.java: ybabble.cup
 	$(CUP) ybabble.cup
 
-compile: *.java  Lexer.java parser.java sym.java
+compile: Lexer.java parser.java *.java
 	$(JAVAC) -cp $(CP)  $^
 
-interactive: Main.class
-	 $(JAVA) -cp $(CP) Main
+interactive: Babble.class 
+	 $(JAVA) -cp $(CP) Babble
 
 clean:
 	rm -f parser.java Lexer.java sym.java out.txt *.class *~

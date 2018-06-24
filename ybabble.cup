@@ -28,6 +28,16 @@ parser code {:
         report_error(message, info);
         System.exit(1);
     }
+
+   //////////////////////////////////////////////////////////	
+
+	private BabbleGrammar __grammar=null;
+	public BabbleGrammar getGrammar()
+	{
+		return this.__grammar;
+	}
+
+
 :};
    
 
@@ -48,7 +58,8 @@ non terminal Object IGNORE_CHARS;
 
 
 
-GRAMMAR		::=	HEAD:h ARROW TAILS:t EOL {:RESULT= new BabbleGrammar(); RESULT.add(h,t);:} | 
+GRAMMAR		::=	HEAD:h ARROW TAILS:t EOL {:RESULT= new BabbleGrammar();  RESULT.add(h,t); 
+__grammar=RESULT;:} | 
 			GRAMMAR:g HEAD:h ARROW TAILS:t EOL {: g.add(h,t); RESULT=g;:};
 
 HEAD  		::= 	NOTERMINAL:n {:RESULT= new String(n);:};

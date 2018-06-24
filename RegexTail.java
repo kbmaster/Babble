@@ -1,6 +1,6 @@
 import java.util.*;
 
-class RegexTail extends Tail
+class RegexTail implements  Tail
 {
 	private String regex;
 	private Double probability;

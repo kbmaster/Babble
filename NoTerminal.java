@@ -3,7 +3,6 @@ class NoTerminal extends BabbleSymbol
         String value;
         public NoTerminal(String v)
         { 
-                //System.out.println("#->"+v);
 		this.value=v;
         }
 

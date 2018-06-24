@@ -35,4 +35,9 @@ class BabbleGrammar
 		return this.productions.get(head);
 	}
 
+	public void test()
+	{
+		System.out.println("BabbleGrammar->"+this.productions.size());
+	}
+
 }
