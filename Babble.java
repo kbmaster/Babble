@@ -1,8 +1,9 @@
 import java.io.*;
 
-public class Babble {
+public class Babble 
+{
 
-  public static BabbleGrammar parseGrammar(String input) throws Exception
+   public static BabbleGrammar parseGrammar(String input) throws Exception
   {
 	 parser __parser = new parser(new Lexer(new BufferedReader(new InputStreamReader(System.in))));
   	 __parser.parse();
@@ -17,8 +18,23 @@ public class Babble {
 	return __parser.getGrammar();
   }
 
+  public static String unparseGrammar(BabbleGrammar babble)
+  {
+	return babble.unparse();		
+  }	
 
-  public static  void main(String argv[]) {    
+  public static void generateValidStrings(int cadenas, BabbleGrammar babble)
+  {
+	while(cadenas!=0)
+	{
+		AST A=babble.produce();
+		System.out.println(A.produce());
+		cadenas --;
+	}
+  }
+
+  public static void main(String argv[]) 
+  {    
      try {
 	
 	 BabbleGrammar B;      
@@ -32,13 +48,13 @@ public class Babble {
 		B = Babble.parseGrammar("");
 	}
 
-	//AST from BabbleGrammar
-	AST A = B.produce();
+	System.out.println(Babble.unparseGrammar(B));
+	//Babble.generateValidStrings(10,B);
 
-	//cadena from AST
-	System.out.println(A.produce());
+		
 
-    } catch (Exception e) {
+    } catch (Exception e) 
+    {
           e.printStackTrace();
     }
   }

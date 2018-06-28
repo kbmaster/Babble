@@ -1,3 +1,4 @@
+
 import java.util.*;
 
 class BabbleGrammar
@@ -29,6 +30,45 @@ class BabbleGrammar
 		return this.start;
 	}
 
+	public String unparse()
+	{
+		Set <String> keyset= this.productions.keySet();
+		//keyset.remove(this.start);
+		List<Object> keys= new ArrayList<Object>(Arrays.asList(keyset.toArray()));
+
+		String gramma="";
+
+		//remove head
+		keys.remove(this.start);
+		keys.add(0,this.start);
+
+		while(!keys.isEmpty())
+		{
+			String head=(String)keys.remove(0);
+			List <Tail> prods = this.productions.get(head);
+
+			for(Tail t : prods)
+			{
+				gramma+=head+":";
+				List <BabbleSymbol> simbols=t.produce();
+
+				for(BabbleSymbol s : simbols)
+				{
+					if(s.getClass().getName().equals("Terminal"))				
+					gramma+="'"+s.getValue()+"'";
+					else
+					gramma+=s.getValue();
+				}
+
+				gramma+=";\n";
+
+			}
+
+		}
+
+
+		return gramma;
+	}
 
 	private  Tail getProdStartWith(String head)
 	{
