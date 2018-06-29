@@ -48,7 +48,7 @@ class AST
 		if(this.children.size()==0)	return ret //leaf
 				
 		for(AST node : this.children)
-		ret+=node.toGraphvitz(node);
+		ret+=node.toGraphvitz(++node);
 						
 		return ret;
 	}
