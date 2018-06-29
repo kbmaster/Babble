@@ -31,7 +31,9 @@ class AST
 	public void print()
 	{
 		//int node=0;
-		//String tree= this.toGraphvitz(node);
+		//String tree="digraph BST {";
+		//tree= this.toGraphvitz(node);
+		//String tree="}";
 		//String commands[] = {"dot", tree};
 		//Process process = new ProcessBuilder(commands).start();
 	}
