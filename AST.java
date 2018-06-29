@@ -26,4 +26,32 @@ class AST
 
 		return str;
 	}
+	
+	
+	public void print()
+	{
+		//int node=0;
+		//String tree= this.toGraphvitz(node);
+		//String commands[] = {"dot", tree};
+		//Process process = new ProcessBuilder(commands).start();
+	}
+
+
+	public String toGraphvitz(int node) 
+	{
+		int parent=node;
+		node ++;
+		String ret="";
+		ret+=node+"1[label=\""+this.value+"\"]\n"; 
+		ret+=parent+"->"+node+"\n";
+		
+		if(this.children.size()==0)	return ret //leaf
+				
+		for(AST node : this.children)
+		ret+=node.toGraphvitz(node);
+						
+		return ret;
+	}
+	
+	
 }
