@@ -48,10 +48,11 @@ public class Babble
 		B = Babble.parseGrammar("");
 	}
 
-	System.out.println(Babble.unparseGrammar(B));
+	//System.out.println(Babble.unparseGrammar(B));
 	//Babble.generateValidStrings(10,B);
-
-		
+	AST a=B.produce();
+	a.print();
+	System.out.println(a.produce());
 
     } catch (Exception e) 
     {

@@ -26,8 +26,8 @@ class RegexTail implements  Tail
 		List <BabbleSymbol> tail = new ArrayList<BabbleSymbol>();
 
 		//convertir la regex en un arbol expTree
+			
 		
-
 		
 		//evaluar el arbol  expTree.produce()
 		String r="abababba";  
@@ -72,11 +72,11 @@ class expTree
 		else
 		{
 			expTree l =this.children.get(0);
+			expTree	r =this.children.get(1);
 
 			switch(this.value)
 			{
 				case("."):
-					expTree	r =this.children.get(1);
 					return concat(l.produce(),r.produce());
 
 				case("?"):
@@ -87,6 +87,9 @@ class expTree
 
 				case("+"):
 					return oneMore(l.produce());
+
+				case("|"):
+					return or(l.produce(),r.produce());
 			}
 
 		}	
@@ -106,6 +109,11 @@ class expTree
 		return a+b;
 	}
 	
+
+	private String or(String l, String r)
+	{
+		return "";
+	}	
 
 	private String zeroMore(String exp)
 	{

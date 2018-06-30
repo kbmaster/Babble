@@ -77,7 +77,7 @@ class BabbleGrammar
 		//aca hay que normalizar las probabilidades de ocurrencia
 		//por el momento devuelvo una al azar de las que existen 		
 		
-		int min = 0;
+		int min =0;
 		int max = prods.size()-1;
 		int range = (max - min) + 1;     
 		int r =(int)(Math.random() * range) + min;

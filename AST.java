@@ -28,32 +28,60 @@ class AST
 	}
 	
 	
-	public void print()
+	public void print() throws Exception
 	{
-		//int node=0;
-		//String tree="digraph BST {";
-		//tree= this.toGraphvitz(node);
-		//String tree="}";
-		//String commands[] = {"dot", tree};
-		//Process process = new ProcessBuilder(commands).start();
+		String tree="digraph BST {\n";
+		int [] node={1};
+		tree+= this.toGraphvitz(0,node);
+		tree+="}";
+		
+		System.out.println(tree);
+
+		String [] cmd =
+		{
+			"/bin/sh",
+			"-c",
+			"echo \""+tree+"\" | dot -Tx11"
+		};
+		
+		Process process = Runtime.getRuntime().exec(cmd);
 	}
 
 
-	public String toGraphvitz(int node) 
+	public String toGraphvitz(int parent,int[] node) 
 	{
-		int parent=node;
-		node ++;
 		String ret="";
-		ret+=node+"1[label=\""+this.value+"\"]\n"; 
-		ret+=parent+"->"+node+"\n";
+		ret+=node[0]+"[label=\""+this.value+"\"]\n"; 
+		if(parent!=0)ret+=parent+"->"+node[0]+"\n";
 		
-		if(this.children.size()==0)	return ret //leaf
-				
-		for(AST node : this.children)
-		ret+=node.toGraphvitz(++node);
-						
+		if(this.children.size()==0) return ret;
+		
+		int tmparent=node[0];
+
+		for(AST n : this.children)
+		{
+			node[0]++;
+			ret+=n.toGraphvitz(tmparent,node);
+		}
+
 		return ret;
 	}
 	
 	
 }
+
+
+/*
+S:'a'T;
+T:'b'R;
+R:'1';
+
+S:'0'S'0';
+S:'1'S'1';
+S:'x';
+
+S:'a'S;
+S:'b';
+}
+
+*/

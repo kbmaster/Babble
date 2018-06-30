@@ -24,7 +24,7 @@ Lexer.java: lbabble.jflex
 parser.java: ybabble.cup
 	$(CUP) ybabble.cup
 
-compile: Lexer.java parser.java *.java
+compile: Lexer.java  parser.java *.java
 	$(JAVAC) -cp $(CP)  $^
 
 interactive: Babble.class 

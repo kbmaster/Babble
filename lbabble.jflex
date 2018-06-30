@@ -33,7 +33,7 @@ ProbVal		= 1|0|0\.\d+
 Eol		= ;
 Ignore		= _
 Pipe		= \|
-
+Lparent		= \(
    
 %%
    
@@ -45,10 +45,16 @@ Pipe		= \|
 	{Regex}		{ System.out.print(yytext()); return symbol(sym.REGEX,new String(yytext()));}
 	{Arrow}		{ System.out.print(" : "); return symbol(sym.ARROW);}	
 	{ProbVal}	{ System.out.print(yytext()); return symbol(sym.PROBVAL,new Double(yytext()));}
-	{Prob}		{System.out.print(" %prob "); return symbol(sym.PROB);}
+	{Prob}		{ System.out.print(" %prob "); return symbol(sym.PROB);}
    	{Eol}		{ System.out.println(" ;"); return symbol(sym.EOL);}
 	{Ignore}	{ System.out.print("_"); return symbol(sym.IGNORE);}
-	{Pipe}		{System.out.print(" | "); return symbol(sym.PIPE);}
+	{Pipe}		{ System.out.print(" | "); return symbol(sym.PIPE);}
+	//{Lparent}	{ System.out.println("("); return symbol(sym.KK);}
+	//")"		{ System.out.println(")"); return symbol(sym.RPARENT);}
+	//"?"		{ System.out.println("?"); return symbol(sym.RPARENT);}
+	//"*"		{ System.out.println("*"); return symbol(sym.ZEROMORE);}
+	//"+"		{ System.out.println("+"); return symbol(sym.ONEMORE);}
+
         {WhiteSpace}    { /* nop */ }   
 }
 
