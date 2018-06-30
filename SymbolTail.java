@@ -23,6 +23,11 @@ class SymbolTail extends Tail
         { 
 		return this.symbols;
         }
+	public void normalizeProb(double maxProb)
+        {
+                double normalizeValue=(this.probability*100)/maxProb;
+                this.probability=normalizeValue/100;
+        }
 }
 
 
