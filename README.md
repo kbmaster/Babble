@@ -1,6 +1,6 @@
 Babble
 
-Requiere jflex,cup
+Requiere jflex,cup,graphvitz
 
 Parse grammar defintion
 
