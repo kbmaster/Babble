@@ -1,11 +1,10 @@
 
 import java.util.*;
 
-class RegexTail implements  Tail
+class RegexTail extends  Tail
 {
-	private String regex;
-	private Double probability;
-	
+	private String regex;	
+
 	public RegexTail(String r)
 	{
 		this.regex=r;
@@ -17,6 +16,7 @@ class RegexTail implements  Tail
                 this.regex=r;
                 this.probability=p;
         }
+
 
 	//esto retorna una lista de simbolos a partir de una expresion regular
 	//la lista de simbolos deben ser todos terminales en orden tal que garantice 

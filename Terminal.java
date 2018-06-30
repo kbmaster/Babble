@@ -1,4 +1,4 @@
-class Terminal extends BabbleSymbol
+class Terminal implements  BabbleSymbol
 {
 	String value;
 	
@@ -10,6 +10,11 @@ class Terminal extends BabbleSymbol
 	public String getValue()
 	{
 		return this.value;
+	}
+
+	public Boolean isTerminal()
+	{
+		return true;
 	} 
 
 	public AST produce()

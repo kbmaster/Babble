@@ -1,4 +1,4 @@
-class NoTerminal extends BabbleSymbol
+class NoTerminal implements BabbleSymbol
 { 
         String value;
         public NoTerminal(String v)
@@ -10,6 +10,11 @@ class NoTerminal extends BabbleSymbol
 	{
 		return this.value;
 	}
+
+	public Boolean isTerminal()
+        { 
+                return false;
+        }
 
         public AST produce()
         { 

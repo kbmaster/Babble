@@ -1,14 +1,11 @@
 import java.util.*;
 
-class SymbolTail implements Tail
+class SymbolTail extends Tail
 { 
-        private List <BabbleSymbol> symbols;
-	private Double probability;
-
         public SymbolTail(List <BabbleSymbol> s)
         { 
                 this.symbols=s;
-		this.probability=1.0;
+		this.probability=null;
         }
 
 	public SymbolTail(List <BabbleSymbol> s, Double p)
@@ -16,6 +13,11 @@ class SymbolTail implements Tail
                 this.symbols=s;
 		this.probability=p;
         }
+
+	public Double getProbability()
+	{
+		return this.probability;
+	}
 
         public List <BabbleSymbol> produce()
         { 

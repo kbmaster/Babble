@@ -44,7 +44,7 @@ parser code {:
 /////////////////////////////////////////////////////////////////////////////
 
 
-terminal String TERMINAL,REGEX,ARROW,PROB,EOL,PIPE,NOTERMINAL,IGNORE;
+terminal String TERMINAL,REGEX,ARROW,PROB,EOL,PIPE,NOTERMINAL,IGNORE,LPARENT,RPARENT,ZERO_ONE,ZERO_MORE,ONE_MORE;
 terminal Double PROBVAL;
 
 non terminal BabbleGrammar  GRAMMAR;
@@ -95,8 +95,9 @@ TAILS           ::=     TAIL |  TAILS PIPE TAIL;
 TAIL            ::=     REGEX |  REGEX PROB PROBVAL|
                         SIMBOLS| SIMBOLS PROB PROBVAL;
 
-SIMBOLS         ::=     SIMBOL| SIMBOLS SIMBOL;
+REGEX		::=	LPARENT SIMBOLS RPARENT;
 
+SIMBOLS         ::=     SIMBOL| SIMBOLS SIMBOL;
 SIMBOL          ::=     TERMINAL | NOTERMINAL;
 
 //ignore

@@ -32,8 +32,6 @@ Prob		= %prob
 ProbVal		= 1|0|0\.\d+
 Eol		= ;
 Ignore		= _
-Pipe		= \|
-Lparent		= \(
    
 %%
    
@@ -48,12 +46,12 @@ Lparent		= \(
 	{Prob}		{ System.out.print(" %prob "); return symbol(sym.PROB);}
    	{Eol}		{ System.out.println(" ;"); return symbol(sym.EOL);}
 	{Ignore}	{ System.out.print("_"); return symbol(sym.IGNORE);}
-	{Pipe}		{ System.out.print(" | "); return symbol(sym.PIPE);}
-	//{Lparent}	{ System.out.println("("); return symbol(sym.KK);}
-	//")"		{ System.out.println(")"); return symbol(sym.RPARENT);}
-	//"?"		{ System.out.println("?"); return symbol(sym.RPARENT);}
-	//"*"		{ System.out.println("*"); return symbol(sym.ZEROMORE);}
-	//"+"		{ System.out.println("+"); return symbol(sym.ONEMORE);}
+	"|"		{ System.out.print(" | "); return symbol(sym.PIPE);}
+	"("       	{ System.out.print(" ( "); return symbol(sym.LPARENT);}
+	")"		{ System.out.println(")"); return symbol(sym.RPARENT);}
+	"?"		{ System.out.println("?"); return symbol(sym.ZERO_ONE);}
+	"*"		{ System.out.println("*"); return symbol(sym.ZERO_MORE);}
+	"+"		{ System.out.println("+"); return symbol(sym.ONE_MORE);}
 
         {WhiteSpace}    { /* nop */ }   
 }

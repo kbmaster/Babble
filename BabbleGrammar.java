@@ -36,7 +36,7 @@ class BabbleGrammar
 		//keyset.remove(this.start);
 		List<Object> keys= new ArrayList<Object>(Arrays.asList(keyset.toArray()));
 
-		String gramma="";
+		String grammar="";
 
 		//remove head
 		keys.remove(this.start);
@@ -46,28 +46,31 @@ class BabbleGrammar
 		{
 			String head=(String)keys.remove(0);
 			List <Tail> prods = this.productions.get(head);
+			grammar+=head+":";
 
 			for(Tail t : prods)
 			{
-				gramma+=head+":";
 				List <BabbleSymbol> simbols=t.produce();
 
 				for(BabbleSymbol s : simbols)
 				{
-					if(s.getClass().getName().equals("Terminal"))				
-					gramma+="'"+s.getValue()+"'";
+					if(s.isTerminal())				
+					grammar+="'"+s.getValue()+"'";
 					else
-					gramma+=s.getValue();
+					grammar+=s.getValue();
 				}
-
-				gramma+=";\n";
-
+				
+				Double prob= t.getProbability();
+				if(prob!=null) grammar+=" %prob "+prob;
+				grammar+="|";
 			}
+
+			grammar=grammar.substring(0,grammar.length()-1)+";\n";
 
 		}
 
 
-		return gramma;
+		return grammar;
 	}
 
 	private  Tail getProdStartWith(String head)
@@ -100,7 +103,7 @@ class BabbleGrammar
 
 		for(BabbleSymbol s:simbols)
 		{
-			if(s.getClass().getName().equals("Terminal"))
+			if(s.isTerminal())
 			node.add(s.produce());
 			else
 			node.add(this.produceSymbol(s.getValue()));

@@ -1,5 +1,7 @@
-abstract class  BabbleSymbol
+interface  BabbleSymbol
 {
-	abstract AST produce();
-	abstract String getValue();
+	public AST produce();
+	public String getValue();
+	public Boolean isTerminal();
 }
+

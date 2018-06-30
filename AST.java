@@ -35,7 +35,7 @@ class AST
 		tree+= this.toGraphvitz(0,node);
 		tree+="}";
 		
-		System.out.println(tree);
+		//System.out.println(tree);
 
 		String [] cmd =
 		{
@@ -83,5 +83,4 @@ S:'x';
 S:'a'S;
 S:'b';
 }
-
 */

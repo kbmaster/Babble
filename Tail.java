@@ -1,7 +1,15 @@
 import java.util.*;
 
-interface Tail
+abstract  class Tail
 {
-	public List<BabbleSymbol> produce();
+        protected List <BabbleSymbol> symbols;
+        protected Double probability;	
+
+	abstract List<BabbleSymbol> produce();
+
+	protected Double  getProbability()
+	{
+		return this.probability;
+	}
 }
 
