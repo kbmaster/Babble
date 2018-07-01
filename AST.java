@@ -1,13 +1,18 @@
 import java.util.*;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 class AST
 {
-	private String value;
-	private List<AST> children;
+	protected String value;
+	protected List<AST> children;
 
 	public AST(String v)
 	{
-		this.value=v;
+		this.value=v.replace("'","");
 		this.children=new ArrayList<AST>();
 	}
 
@@ -15,10 +20,15 @@ class AST
 	{
 		this.children.add(child);
 	}
-	
+
+	public Boolean isLeaf()
+	{
+		return this.children.size()==0;
+	}
+
 	public String produce()
 	{
-		if(this.children.size()==0) return this.value; //leaf
+		if(this.isLeaf()) return this.value; //leaf
               
 		String str="";
 		for(AST node : this.children)
@@ -35,16 +45,46 @@ class AST
 		tree+= this.toGraphvitz(0,node);
 		tree+="}";
 		
+		Path path= Paths.get("/tmp/tree.gvz");
+                Files.write(path,tree.getBytes());
+				
 		//System.out.println(tree);
 
 		String [] cmd =
 		{
 			"/bin/sh",
 			"-c",
-			"echo \""+tree+"\" | dot -Tx11"
+			"dot  /tmp/tree.gvz -Tx11"
 		};
 		
+		//echo bla | dot -Tx11
+		
 		Process process = Runtime.getRuntime().exec(cmd);
+		//this.readProcOutput(process);
+	}
+
+	public void readProcOutput(Process proc) throws Exception
+	{
+		BufferedReader stdInput = new BufferedReader(new 
+     		InputStreamReader(proc.getInputStream()));
+
+		BufferedReader stdError = new BufferedReader(new 
+		InputStreamReader(proc.getErrorStream()));
+
+		// read the output from the command
+		System.out.println("Here is the standard output of the command:\n");
+		String s = null;
+		while ((s = stdInput.readLine()) != null) {
+		System.out.println(s);
+		}
+
+		// read any errors from the attempted command
+		System.out.println("Here is the standard error of the command (if any):\n");
+		while ((s = stdError.readLine()) != null) {
+		    System.out.println(s);
+		}
+
+
 	}
 
 
@@ -54,7 +94,7 @@ class AST
 		ret+=node[0]+"[label=\""+this.value+"\"]\n"; 
 		if(parent!=0)ret+=parent+"->"+node[0]+"\n";
 		
-		if(this.children.size()==0) return ret;
+		if(this.isLeaf()) return ret;
 		
 		int tmparent=node[0];
 
@@ -66,7 +106,6 @@ class AST
 
 		return ret;
 	}
-	
 	
 }
 

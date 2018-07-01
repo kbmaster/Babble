@@ -1,54 +1,18 @@
-
-import java.util.*;
-
-class RegexTail extends  Tail
+class RTree extends AST
 {
-	private RTree regex;
-
-	public RegexTail(RTree r)
+	public RTree(String v)
 	{
-		this.regex=r;
-		this.probability=null;
-	}
-		
-	public RegexTail(RTree r,Double p)
-        {
-                this.regex=r;
-                this.probability=p;
-        }
-
-	//esto retorna una lista de simbolos a partir de una expresion regular
-	//la lista de simbolos deben ser todos terminales en orden tal que garantice 
-	//que la cadena pertenece al lenguaje que describe la regex	
-	public List <BabbleSymbol> produce()
-	{
-		//this.regex.print();		
-
-		List <BabbleSymbol> tail = new ArrayList<BabbleSymbol>();
-
-		//convertir la regex en un arbol expTree
-			
-		
-		
-		//evaluar el arbol  expTree.produce()
-		String r="abababba";  
-		
-		//convertir el string resultante en una lista de terminales
-		char [] cr=r.toCharArray();
-		for(char c : cr)
-		tail.add(new Terminal(c+""));
-								
-		return tail;
+		super(v);
 	}
 
 
-	/* public String produce2()
+	 public String produce()
         {
                 if(this.isLeaf()) return this.value;
                 else
                 {
-                        expTree l =this.children.get(0);
-                        expTree r =this.children.get(1);
+                        RTree l =(RTree)this.children.get(0);
+                        RTree r =(RTree)this.children.get(1);
 
                         switch(this.value)
                         {
@@ -74,13 +38,8 @@ class RegexTail extends  Tail
 
         }
 
-	  public Boolean isLeaf()
-        {
-                return this.children.size()==0;
-        }
 
-
-        private String concat(String a, String  b)
+	 private String concat(String a, String  b)
         {
                 return a+b;
         }
@@ -116,7 +75,6 @@ class RegexTail extends  Tail
 
         }
 
-
 	 private String zeroOne(String exp)
         {
                  //entre 0 y 1
@@ -127,14 +85,8 @@ class RegexTail extends  Tail
                 ret+=exp;
 
                 return ret;
-        }*/
+        }
+
 
 
 }
-
-
-
-
-
-
-

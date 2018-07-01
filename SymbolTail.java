@@ -2,7 +2,9 @@ import java.util.*;
 
 class SymbolTail extends Tail
 { 
-        public SymbolTail(List <BabbleSymbol> s)
+        private List <BabbleSymbol> symbols;
+
+	public SymbolTail(List <BabbleSymbol> s)
         { 
                 this.symbols=s;
 		this.probability=null;

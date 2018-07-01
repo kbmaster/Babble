@@ -23,7 +23,6 @@ import java_cup.runtime.*;
 
 
 LineTerminator 	= \r|\n|\r\n
-Regex		= \([a-z0-9\?\*\+|]*\)[\+\*\?]?
 WhiteSpace     	= {LineTerminator} | [ \t\f]  
 NoTerminal	= [A-Z]\w*
 Terminal	=  \'([^\'\\]|\\[\'\\\/bfnrt]|\\u[a-fA-F0-9]{4})*\'
@@ -40,7 +39,6 @@ Ignore		= _
     
 	{Terminal}   	{ System.out.print(yytext()); return symbol(sym.TERMINAL,new String(yytext())); }
 	{NoTerminal} 	{ System.out.print(yytext()); return symbol(sym.NOTERMINAL,new String(yytext())); }
-	{Regex}		{ System.out.print(yytext()); return symbol(sym.REGEX,new String(yytext()));}
 	{Arrow}		{ System.out.print(" : "); return symbol(sym.ARROW);}	
 	{ProbVal}	{ System.out.print(yytext()); return symbol(sym.PROBVAL,new Double(yytext()));}
 	{Prob}		{ System.out.print(" %prob "); return symbol(sym.PROB);}
