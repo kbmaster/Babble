@@ -63,30 +63,6 @@ class AST
 		//this.readProcOutput(process);
 	}
 
-	public void readProcOutput(Process proc) throws Exception
-	{
-		BufferedReader stdInput = new BufferedReader(new 
-     		InputStreamReader(proc.getInputStream()));
-
-		BufferedReader stdError = new BufferedReader(new 
-		InputStreamReader(proc.getErrorStream()));
-
-		// read the output from the command
-		System.out.println("Here is the standard output of the command:\n");
-		String s = null;
-		while ((s = stdInput.readLine()) != null) {
-		System.out.println(s);
-		}
-
-		// read any errors from the attempted command
-		System.out.println("Here is the standard error of the command (if any):\n");
-		while ((s = stdError.readLine()) != null) {
-		    System.out.println(s);
-		}
-
-
-	}
-
 
 	public String toGraphvitz(int parent,int[] node) 
 	{
@@ -110,16 +86,3 @@ class AST
 }
 
 
-/*
-S:'a'T;
-T:'b'R;
-R:'1';
-
-S:'0'S'0';
-S:'1'S'1';
-S:'x';
-
-S:'a'S;
-S:'b';
-}
-*/

@@ -47,15 +47,15 @@ parser code {:
 terminal String TERMINAL,ARROW,PROB,EOL,PIPE,NOTERMINAL,IGNORE,LPARENT,RPARENT,ZERO_ONE,ZERO_MORE,ONE_MORE,CONCAT;
 terminal Double PROBVAL;
 
-non terminal String REGEX;
-non terminal BabbleGrammar  GRAMMAR;
-non terminal String HEAD;
-non terminal List  TAILS;
-non terminal Tail  TAIL;
-nonterminal  List SIMBOLS;
-nonterminal  BabbleSymbol SIMBOL;
-non terminal RTree EXP;
-non terminal Object IGNORE_CHARS;
+non terminal BabbleGrammar  	GRAMMAR;
+non terminal String 		HEAD;
+non terminal List  		TAILS;
+non terminal Tail  		TAIL;
+nonterminal  List 		SIMBOLS;
+nonterminal  BabbleSymbol 	SIMBOL;
+non terminal RTree 		REGEX;
+non terminal RTree 		EXP;
+non terminal Object 		IGNORE_CHARS;
 
 precedence left PIPE,ZERO_ONE,ONE_MORE;
 precedence left CONCAT;
@@ -70,8 +70,8 @@ HEAD  		::= 	NOTERMINAL:n {:RESULT= new String(n);:};
 TAILS		::=	TAIL:t {:RESULT=new ArrayList(); RESULT.add(t);:} | 
 			TAILS:ts PIPE TAIL:t {:ts.add(t); RESULT=ts;:};
 
-TAIL		::=     REGEX| 
-			REGEX PROB PROBVAL:p |
+TAIL		::=     REGEX:r {: RESULT=new RegexTail(r);:}| 
+			REGEX:r PROB PROBVAL:p {:RESULT= new RegexTail(r,p);:}|
 			SIMBOLS:s {: RESULT= new SymbolTail(s);:}|
 			SIMBOLS:s PROB PROBVAL:p {: RESULT= new SymbolTail(s,p);:};
 
@@ -81,12 +81,12 @@ SIMBOLS  	::= 	SIMBOL:s {:RESULT=new ArrayList(); RESULT.add(s);:} |
 SIMBOL  	::= 	TERMINAL:t {:RESULT=new Terminal(t);:} | 
 			NOTERMINAL:n {:RESULT=new NoTerminal(n);:};
 
-REGEX		::=  	LPARENT EXP:e RPARENT {:e.print();:};  
+REGEX		::=  	LPARENT EXP:e RPARENT {: RESULT=e;:};  
 EXP             ::=	EXP:e1 PIPE EXP:e2 {:RESULT=new RTree("|"); RESULT.add(e1); RESULT.add(e2);:}|
                      	EXP:e ZERO_MORE {:RESULT=new RTree("*"); RESULT.add(e);:}|
 			EXP:e ONE_MORE {:RESULT=new RTree("+"); RESULT.add(e);:}|
                       	EXP:e ZERO_ONE {:RESULT=new RTree("?"); RESULT.add(e);:}|
-                      	LPARENT EXP:e RPARENT {:RESULT=new RTree("( )"); RESULT.add(e);:} |
+                      	LPARENT EXP:e RPARENT {:RESULT=new RTree("()"); RESULT.add(e);:} |
                       	EXP:e1 EXP:e2 {:RESULT=new RTree("."); RESULT.add(e1); RESULT.add(e2);:} %prec CONCAT|
                       	TERMINAL:t {: RESULT= new RTree(t);:};
 
@@ -97,37 +97,3 @@ EXP             ::=	EXP:e1 PIPE EXP:e2 {:RESULT=new RTree("|"); RESULT.add(e1); 
 
 
 
-/*
-
-GRAMMAR         ::=     HEAD ARROW TAILS EOL |
-                        GRAMMAR HEAD ARROW TAILS EOL ;
-
-HEAD            ::=     NOTERMINAL;
-
-TAILS           ::=     TAIL |
-                        TAILS PIPE TAIL;
-
-TAIL            ::=     REGEX|
-                        REGEX PROB PROBVAL|
-                        SIMBOLS |
-                        SIMBOLS PROB PROBVAL;
-
-SIMBOLS         ::=     SIMBOL |
-                        SIMBOLS SIMBOL;
-
-SIMBOL          ::=     TERMINAL |
-                        NOTERMINAL;
-
-REGEX           ::=    REGEX PIPE REGEX |
-                       REGEX ZERO_MORE |
-                       REGEX ONE_MORE |
-                       REGEX ZERO_ONE |
-                       LPARENT REGEX RPARENT |
-                       TERMINAL REGEX |
-                       TERMINAL;
-
-//ignore
-IGNORE      	::=     IGNORE ARROW IGNORE_CHARS EOL;
-IGNORE_CHARS    ::=     TERMINAL | IGNORE_CHARS PIPE TERMINAL;
-
-*/

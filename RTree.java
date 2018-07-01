@@ -12,24 +12,31 @@ class RTree extends AST
                 else
                 {
                         RTree l =(RTree)this.children.get(0);
-                        RTree r =(RTree)this.children.get(1);
+                        RTree r;
+
 
                         switch(this.value)
                         {
                                 case("."):
-                                        return concat(l.produce(),r.produce());
+					r=(RTree)this.children.get(1);
+                                        return concat(l,r);
 
                                 case("?"):
-                                        return zeroOne(l.produce());
+                                        return zeroOne(l);
 
                                 case("*"):
-                                        return zeroMore(l.produce());
+                                        return zeroMore(l);
 
                                 case("+"):
-                                        return oneMore(l.produce());
+                                        return oneMore(l);
 
                                 case("|"):
-                                        return or(l.produce(),r.produce());
+					 r=(RTree)this.children.get(1);
+                                        return or(l,r);
+				
+				case("()"):
+					return l.produce();
+				
                         }
 
                 }
@@ -39,52 +46,57 @@ class RTree extends AST
         }
 
 
-	 private String concat(String a, String  b)
+	private String concat(RTree a, RTree  b)
         {
-                return a+b;
+                return a.produce()+b.produce();
         }
 
 
-        private String or(String l, String r)
+        private String or(RTree a, RTree b)
         {
-                return "";
+                int r =(int)(Math.random() * 2);
+		
+		return (r==0)?a.produce():b.produce();
         }
 
-        private String zeroMore(String exp)
+        private String zeroMore(RTree exp)
         {
-                //entre 0 y 10
+		//entre 0 y 10
                 int r =(int)(Math.random() * 11);
 
+                String p= exp.produce();
                 String ret="";
                 while(r!=0)
-                ret+=exp;
+		{
+                	ret+=p;
+			r--;
+		}
 
                 return ret;
         }
 
-        private String oneMore(String exp)
+        private String oneMore(RTree exp)
         {
                 //entre 1 y 10
                 int r =(int)(Math.random() * 10) + 1;
 
+                String p= exp.produce();
                 String ret="";
                 while(r!=0)
-                ret+=exp;
+		{
+                	ret+=p;
+			r--;
+		}
 
                 return ret;
 
         }
 
-	 private String zeroOne(String exp)
+	 private String zeroOne(RTree exp)
         {
                  //entre 0 y 1
                 int r =(int)(Math.random() * 2);
-
-                String ret="";
-                while(r!=0)
-                ret+=exp;
-
-                return ret;
+                return (r==0)? "":exp.produce();
         }
 
 
