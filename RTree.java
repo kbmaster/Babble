@@ -89,11 +89,10 @@ class RTree extends AST
 		//entre 0 y 10
                 int r =(int)(Math.random() * 11);
 
-                String p= exp.produce();
                 String ret="";
                 while(r!=0)
 		{
-                	ret+=p;
+                	ret+=exp.produce();
 			r--;
 		}
 
@@ -105,11 +104,10 @@ class RTree extends AST
                 //entre 1 y 10
                 int r =(int)(Math.random() * 10) + 1;
 
-                String p= exp.produce();
                 String ret="";
                 while(r!=0)
 		{
-                	ret+=p;
+			ret+=exp.produce();             	
 			r--;
 		}
 
