@@ -42,9 +42,9 @@ class SymbolTail extends Tail
         public  Boolean hasTerminal()
         { 
 	   for(BabbleSymbol s: this.symbols)
-           if(s.isTerminal())return true;
+           if(!s.isTerminal())return false;
 
-            return false;
+            return true;
         }
 
 }

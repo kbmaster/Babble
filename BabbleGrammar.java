@@ -163,7 +163,6 @@ class BabbleGrammar
 		Tail prod = this.getProdStartWith(symbol,height);
 		List <BabbleSymbol> simbols = prod.produce();
 
-
 		for(BabbleSymbol s:simbols)
 		{
 			if(s.isTerminal())
@@ -187,20 +186,20 @@ class BabbleGrammar
                 if(ntl.size()>0) return getProbableTail(ntl);
 
                 //si no hay ninguna me aseguro de retornar algo
-                return this.getTerminalTail(prods);
+                return this.getProbableTail(prods);
         }
 
         private Tail getTerminalTail(List<Tail> prods)
         {
-                List<Tail> tl=new ArrayList<Tail>();
+		List<Tail> tl=new ArrayList<Tail>();
 
                 for(Tail t:prods)
                 if(t.hasTerminal())tl.add(t);
-
+		
                 if(tl.size()>0)return getProbableTail(tl);
 
                 //si no hay ninguna me aseguro de retornar algo
-                return this.getNoTerminalTail(prods);
+                return this.getProbableTail(prods);
         }
 
 
