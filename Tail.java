@@ -5,6 +5,8 @@ abstract class  Tail
 	protected Double probability;
 	abstract public  List<BabbleSymbol> produce();
 	abstract public  List<BabbleSymbol> unparse();	
+	abstract public  Boolean hasNoTerminal();
+	abstract public  Boolean hasTerminal();
 
 	protected Double  getProbability()
 	{

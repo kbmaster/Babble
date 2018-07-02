@@ -6,11 +6,32 @@ class BabbleGrammar
 {
 	private Map<String,List<Tail>> productions;
 	private String start;	
+
+	//El valor maximo y minimo de la altura no es prio del arbol sino
+	//de las restricciones que la gramatica le impone
+
+	private Integer hmin;
+	private Integer hmax;
+
 		
 	public  BabbleGrammar()
 	{
 		this.productions= new HashMap<String,List<Tail>>();
+		this.hmin=0;
+		this.hmax=1000;//bastante grande
 	}
+
+	
+	public void setMinHeightTrees(int h)
+        { 
+                this.hmin=h;
+        }
+	
+	public void setMaxHeightTrees(int h)
+	{
+		this.hmax=h;
+	}
+
 
 	public void add(String head,List <Tail> prods)
 	{
@@ -38,7 +59,6 @@ class BabbleGrammar
 		List<Object> keys= new ArrayList<Object>(Arrays.asList(keyset.toArray()));
 
 		String grammar="";
-
 		//remove head
 		keys.remove(this.start);
 		keys.add(0,this.start);
@@ -104,45 +124,99 @@ class BabbleGrammar
 
 
 
-	private  Tail getProdStartWith(String head)
+	private  Tail getProdStartWith(String head, int height)
 	{
 		List <Tail> prods = this.productions.get(head);		
 		
-		//aca hay que normalizar las probabilidades de ocurrencia
-		//por el momento devuelvo una al azar de las que existen 		
-		
-		int min =0;
+		Tail selection=null;
+
+		if(height<=this.hmin) //obtener noterminales
+		selection=this.getNoTerminalTail(prods);
+			 
+		if(height>this.hmin && height <=this.hmax)//solo probabilidad
+		selection=this.getProbableTail(prods);
+
+		if(height>this.hmax)//obtener terminales
+		selection=this.getTerminalTail(prods);
+
+		return selection;
+
+		/*int min =0;
 		int max = prods.size()-1;
 		int range = (max - min) + 1;     
 		int r =(int)(Math.random() * range) + min;
 
-		return prods.get(r); 
+		return prods.get(r);*/
 	}
+
 
 
 	public AST produce()
 	{
-		return this.produceSymbol(this.start);		
+		return this.produceSymbol(this.start,0);		
 	}
 
 
-	private AST produceSymbol(String symbol)
+	private AST produceSymbol(String symbol,int height)
 	{
-		Tail prod = this.getProdStartWith(symbol);
-		List <BabbleSymbol> simbols = prod.produce();
 		AST node= new AST(symbol);
+		Tail prod = this.getProdStartWith(symbol,height);
+		List <BabbleSymbol> simbols = prod.produce();
+
 
 		for(BabbleSymbol s:simbols)
 		{
 			if(s.isTerminal())
 			node.add(s.produce());
 			else
-			node.add(this.produceSymbol(s.getValue()));
+			node.add(this.produceSymbol(s.getValue(),++height));
 		}
 
 		return node;
 	}
 
+
+
+	private Tail getNoTerminalTail(List<Tail> prods)
+        {
+                List<Tail> ntl=new ArrayList<Tail>();
+
+                for(Tail t:prods)
+                if(t.hasNoTerminal()) ntl.add(t);
+
+                if(ntl.size()>0) return getProbableTail(ntl);
+
+                //si no hay ninguna me aseguro de retornar algo
+                return this.getTerminalTail(prods);
+        }
+
+        private Tail getTerminalTail(List<Tail> prods)
+        {
+                List<Tail> tl=new ArrayList<Tail>();
+
+                for(Tail t:prods)
+                if(t.hasTerminal())tl.add(t);
+
+                if(tl.size()>0)return getProbableTail(tl);
+
+                //si no hay ninguna me aseguro de retornar algo
+                return this.getNoTerminalTail(prods);
+        }
+
+
+
+        private Tail getProbableTail(List<Tail> prods)
+        {
+                Double rnd=Math.random();
+                for(Tail t:prods)
+                {
+                        if(rnd<=t.getProbability())return t;
+                        else rnd-=t.getProbability();
+                }
+
+                return prods.get(prods.size()-1);
+
+        }
 
 
 

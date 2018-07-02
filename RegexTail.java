@@ -56,6 +56,17 @@ class RegexTail extends  Tail
 		return ret;
 	}
 
+	//las colas regex tienen solo terminales
+	public  Boolean hasNoTerminal()
+	{
+		return false;
+	}
+	
+	public  Boolean hasTerminal()
+	{
+		return true;
+	}
+
 }
 
 

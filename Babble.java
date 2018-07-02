@@ -75,7 +75,9 @@ public class Babble
   {    
      try {
 	
-	 BabbleGrammar B;      
+	 BabbleGrammar B;
+	 int hmin=0;
+	 int hmax=1000;	      
 
 	String filename=(argv.length!=0)? argv[argv.length-1]:"";
 	File f = new File(filename);	
@@ -102,14 +104,28 @@ public class Babble
 
 		case("strings"):
 		case("-s"):
+			
+			if(argv.length >= 3)hmin=Integer.parseInt(argv[2]);
+			if(argv.length >=4)hmax=Integer.parseInt(argv[3]);
+			
+			B.setMinHeightTrees(hmin);
+			B.setMaxHeightTrees(hmax);
+			
 			List<String> l = Babble.generateValidStrings(Integer.parseInt(argv[1]),B);
 			for(String s:l)System.out.println(s);
 		break;
 
 		case("trees"):
 		case("-t"):
+			
+			if(argv.length >= 3)hmin=Integer.parseInt(argv[2]);
+			if(argv.length >=4)hmax=Integer.parseInt(argv[3]);
+
+                        B.setMinHeightTrees(hmin);
+                        B.setMaxHeightTrees(hmax);
+
 			List<AST> la = Babble.generateValidTrees(Integer.parseInt(argv[1]),B);
-                        for(AST a:la) a.print();
+                        for(AST a:la){ a.print();}
 		break;
 
 		default: Babble.printHelp();

@@ -26,6 +26,16 @@ class AST
 		return this.children.size()==0;
 	}
 
+	public int getAltura()
+	{
+		int h=0;
+
+		for(AST node:this.children)
+		h=Math.max(h,1+node.getAltura());
+		
+		return h;		
+	}
+
 	public String produce()
 	{
 		if(this.isLeaf()) return this.value; //leaf

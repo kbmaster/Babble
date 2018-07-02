@@ -30,6 +30,23 @@ class SymbolTail extends Tail
         {
                 return this.symbols;
         }
+
+        public  Boolean hasNoTerminal()
+        { 
+                for(BabbleSymbol s: this.symbols)
+		if(!s.isTerminal())return true;
+		
+		return false;
+        }
+
+        public  Boolean hasTerminal()
+        { 
+	   for(BabbleSymbol s: this.symbols)
+           if(s.isTerminal())return true;
+
+            return false;
+        }
+
 }
 
 
