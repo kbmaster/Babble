@@ -45,6 +45,31 @@ class RTree extends AST
 
         }
 
+	public String unparse()
+	{
+		if(this.isLeaf()) return this.value; 
+		
+		Boolean printed=false;
+		String ret="";
+		if(this.value.equals("()"))ret+="(";
+
+
+		for( AST n : this.children)
+		{
+			RTree node= (RTree) n;
+			ret+=node.unparse();
+			if(!printed)
+			{
+				if(!this.value.equals("()") && !this.value.equals("."))
+				ret+=this.value; 
+				printed=true;
+			}
+		}
+		
+		if(this.value.equals("()"))ret+=")";
+		
+		return ret;
+	}
 
 	private String concat(RTree a, RTree  b)
         {
@@ -98,6 +123,7 @@ class RTree extends AST
                 int r =(int)(Math.random() * 2);
                 return (r==0)? "":exp.produce();
         }
+
 
 
 

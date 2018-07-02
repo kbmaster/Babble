@@ -1,0 +1,10 @@
+JSON:VALUE;
+OBJECT:'{''}'|'{' PAIRS '}';
+PAIRS: STRING ':' VALUE |  PAIRS ',' STRING ':' VALUE;
+ARRAY: '[' VALUES ']' | '['']';
+VALUES : VALUE | VALUES ',' VALUE;
+VALUE  : STRING | NUMBER | OBJECT | ARRAY | 'true' | 'flase' | 'null';
+STRING : ('"'('a'|'b'|'c')+'"');
+NUMBER : (('0'|'1'|'2')+);
+
+

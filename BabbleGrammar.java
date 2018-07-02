@@ -1,5 +1,6 @@
 
 import java.util.*;
+import java.util.Map.*;
 
 class BabbleGrammar
 {
@@ -50,7 +51,7 @@ class BabbleGrammar
 
 			for(Tail t : prods)
 			{
-				List <BabbleSymbol> simbols=t.produce();
+				List <BabbleSymbol> simbols=t.unparse();
 
 				for(BabbleSymbol s : simbols)
 				{
@@ -61,7 +62,8 @@ class BabbleGrammar
 				}
 				
 				Double prob= t.getProbability();
-				if(prob!=null) grammar+=" %prob "+prob;
+
+				if(prob!=1.0) grammar+=" %prob "+prob;
 				grammar+="|";
 			}
 
@@ -72,6 +74,35 @@ class BabbleGrammar
 
 		return grammar;
 	}
+
+	
+	public void normalize()
+	{
+		for(Entry<String, List<Tail>> entry:this.productions.entrySet())
+		{
+			//Cantidad de producciones
+			int catidadTail=entry.getValue().size();
+			List<Tail> lista=(List<Tail>)entry.getValue();
+			
+			double sumaTotalProb=0.0;
+
+			for(int i=0;i<catidadTail;i++)
+	    		{
+				Tail symbolT=lista.get(i);
+				sumaTotalProb +=symbolT.getProbability();
+	    		}
+
+	    		for(int i=0;i<catidadTail;i++)
+	    		{
+				Tail symbolT=lista.get(i);
+				symbolT.normalizeProb(sumaTotalProb);
+	    		}
+
+		}
+
+	}
+
+
 
 	private  Tail getProdStartWith(String head)
 	{

@@ -51,7 +51,25 @@ public class Babble
 
 	return asts;
   }
+
 	
+  public static void normalizeGrammar(BabbleGrammar babble)
+  {
+	babble.normalize();
+  }
+	
+
+
+  public static void printHelp()
+  {
+	System.out.println("Usage: Babble [options][file]");
+	System.out.println("Options:");
+	System.out.println("-u,unparse             		unparse the grammar");
+	System.out.println("-s,strings  n  [hmin,hmax,probs] 	generate n valid strings");
+	System.out.println("-t,trees    n  [hmin,hmax,probs]    generate n valid trees");
+  }
+
+
 
   public static void main(String argv[]) 
   {    
@@ -59,21 +77,44 @@ public class Babble
 	
 	 BabbleGrammar B;      
 
-	if(argv.length!= 0)//load input from file
+	String filename=(argv.length!=0)? argv[argv.length-1]:"";
+	File f = new File(filename);	
+
+	if(f.exists() && !f.isDirectory())//load input from file
 	{
-		B= Babble.parseGrammarFile(argv[0]);
+		B= Babble.parseGrammarFile(filename);
 	}
 	else //load input from interactive command line
 	{
 		B = Babble.parseGrammar("");
 	}
 
-	//List<String> l= Babble.generateValidStrings(10,B);
-	//System.out.println(l);	
-
-	List<AST> l= Babble.generateValidTrees(10,B);
-	for(AST t:l)t.print();
 	
+	Babble.normalizeGrammar(B);	
+
+	
+	switch(argv[0])
+	{
+		case("unparse"):
+		case("-u"): 
+			System.out.println(Babble.unparseGrammar(B));	
+		break;
+
+		case("strings"):
+		case("-s"):
+			List<String> l = Babble.generateValidStrings(Integer.parseInt(argv[1]),B);
+			for(String s:l)System.out.println(s);
+		break;
+
+		case("trees"):
+		case("-t"):
+			List<AST> la = Babble.generateValidTrees(Integer.parseInt(argv[1]),B);
+                        for(AST a:la) a.print();
+		break;
+
+		default: Babble.printHelp();
+
+	}
 
 
     } catch (Exception e) 

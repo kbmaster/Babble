@@ -1,9 +1,11 @@
 JAVA=java
 JAVAC=javac
 JFLEX=jflex
+JAR=jar
 CUPJAR = ./libs/java-cup-11b.jar
 CUP=$(JAVA) -jar $(CUPJAR) <
 CP= .:$(CUPJAR)  
+
 
 all: test
 
@@ -28,7 +30,10 @@ compile: Lexer.java  parser.java *.java
 	$(JAVAC) -cp $(CP)  $^
 
 interactive: Babble.class 
-	 $(JAVA) -cp $(CP) Babble
+	 $(JAVA) -cp $(CP) Babble -s 5 
+
+jar: *.class
+	$(JAR) cmvf MANIFEST.MF Babble.jar $^
 
 clean:
-	rm -f parser.java Lexer.java sym.java out.txt *.class *~
+	rm -f parser.java Lexer.java sym.java out.txt  Babble.jar *.class *~

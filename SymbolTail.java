@@ -7,7 +7,7 @@ class SymbolTail extends Tail
 	public SymbolTail(List <BabbleSymbol> s)
         { 
                 this.symbols=s;
-		this.probability=null;
+		this.probability=1.0;
         }
 
 	public SymbolTail(List <BabbleSymbol> s, Double p)
@@ -24,6 +24,11 @@ class SymbolTail extends Tail
         public List <BabbleSymbol> produce()
         { 
 		return this.symbols;
+        }
+
+	public List <BabbleSymbol> unparse()
+        {
+                return this.symbols;
         }
 }
 

@@ -57,9 +57,9 @@ non terminal RTree 		REGEX;
 non terminal RTree 		EXP;
 non terminal Object 		IGNORE_CHARS;
 
-precedence left PIPE,ZERO_ONE,ONE_MORE;
+precedence left PIPE;
 precedence left CONCAT;
-precedence left ZERO_MORE;
+precedence left ZERO_MORE,ONE_MORE,ZERO_ONE;
 
 
 GRAMMAR		::=	HEAD:h ARROW TAILS:t EOL {:RESULT= new BabbleGrammar();  RESULT.add(h,t); __grammar=RESULT;:} | 

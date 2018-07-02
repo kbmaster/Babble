@@ -67,7 +67,10 @@ class AST
 	public String toGraphvitz(int parent,int[] node) 
 	{
 		String ret="";
-		ret+=node[0]+"[label=\""+this.value+"\"]\n"; 
+		ret+=node[0]+"[label=\"";
+		ret+=(this.value.equals("\""))? "\\"+this.value : this.value; 
+		ret+="\"]\n";
+ 
 		if(parent!=0)ret+=parent+"->"+node[0]+"\n";
 		
 		if(this.isLeaf()) return ret;

@@ -8,7 +8,7 @@ class RegexTail extends  Tail
 	public RegexTail(RTree r)
 	{
 		this.regex=r;
-		this.probability=null;
+		this.probability=1.0;
 	}
 
 	public RegexTail(RTree r, Double p)
@@ -31,6 +31,29 @@ class RegexTail extends  Tail
 		tail.add(new Terminal(c+""));
 								
 		return tail;
+	}
+
+	public List <BabbleSymbol> unparse()
+	{
+		char [] noterm = {'?','*','+','|','(',')'};
+		String r=this.regex.unparse();
+		char[] sims= r.toCharArray();
+
+		List <BabbleSymbol> ret=new ArrayList<BabbleSymbol>();
+		
+		ret.add(new NoTerminal("("));
+
+		for(char c :sims)
+		{
+			if(new String(noterm).indexOf(c) != -1)
+			ret.add(new NoTerminal(""+c));
+			else
+			ret.add(new Terminal(""+c));
+		}
+
+		ret.add(new NoTerminal(")"));			
+
+		return ret;
 	}
 
 }
