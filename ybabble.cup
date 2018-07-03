@@ -81,7 +81,7 @@ SIMBOLS  	::= 	SIMBOL:s {:RESULT=new ArrayList(); RESULT.add(s);:} |
 SIMBOL  	::= 	TERMINAL:t {:RESULT=new Terminal(t);:} | 
 			NOTERMINAL:n {:RESULT=new NoTerminal(n);:};
 
-REGEX		::=  	LPARENT EXP:e RPARENT {: RESULT=e; e.print();:};  
+REGEX		::=  	LPARENT EXP:e RPARENT {: RESULT=e;:};  
 EXP             ::=	EXP:e1 PIPE EXP:e2 {:RESULT=new RTree("|"); RESULT.add(e1); RESULT.add(e2);:}|
                      	EXP:e ZERO_MORE {:RESULT=new RTree("*"); RESULT.add(e);:}|
 			EXP:e ONE_MORE {:RESULT=new RTree("+"); RESULT.add(e);:}|

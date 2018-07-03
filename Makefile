@@ -30,7 +30,7 @@ compile: Lexer.java  parser.java *.java
 	$(JAVAC) -cp $(CP)  $^
 
 interactive: Babble.class 
-	 $(JAVA) -cp $(CP) Babble -t 10  5  10 ./test/json.babble
+	 $(JAVA) -cp $(CP) Babble -u  ./test/json.babble
 
 jar: *.class
 	$(JAR) cmvf MANIFEST.MF Babble.jar $^

@@ -24,7 +24,7 @@ import java_cup.runtime.*;
 
 LineTerminator 	= \r|\n|\r\n
 WhiteSpace     	= {LineTerminator} | [ \t\f]  
-NoTerminal	= [A-Z]\w*
+NoTerminal	= [A-Za-z]\w*
 Terminal	=  \'([^\'\\]|\\[\'\\\/bfnrt]|\\u[a-fA-F0-9]{4})*\'
 Arrow		= :
 Prob		= %prob
