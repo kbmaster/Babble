@@ -1,5 +1,6 @@
 GRAMMAR         :     HEAD ':' TAILS ';' |
-                      GRAMMAR HEAD  ':' TAILS ';';
+                      GRAMMAR HEAD  ':' TAILS ';' |
+		      GRAMMAR '_' ':' IGNORE_TAILS';';	
 
 HEAD            :     NOTERMINAL;
 
@@ -20,8 +21,11 @@ EXP             :     TERMINAL |
                       '(' EXP2 ')' |
                       EXP2 EXP;
 
-EXP2		:TERMINAL;	
+EXP2		:     TERMINAL;	
 
+
+IGNORE_TAILS    :     IGNORE_TAIL |  IGNORE_TAILS '|' IGNORE_TAIL;
+IGNORE_TAIL     :     TERMINAL;
 
 TERMINAL:('"'('a'|'b'|'c')+'"');
 NOTERMINAL:('A'|'B'|'C');

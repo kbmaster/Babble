@@ -249,7 +249,6 @@ class BabbleGrammar
 
 		for(BabbleSymbol s:simbols)
 		{
-			System.out.println("->"+s.getValue());
 			if(s.isTerminal())
 			node.add(s.produce());
 			else
