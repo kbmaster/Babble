@@ -83,7 +83,7 @@ class BabbleGrammar
 				
 				Double prob= t.getProbability();
 
-				if(prob!=1.0) grammar+=" %prob "+prob;
+				if(prob!=1.0 && head!="_") grammar+=" %prob "+prob;
 				grammar+="|";
 			}
 
@@ -126,8 +126,8 @@ class BabbleGrammar
 
 	private  Tail getProdStartWith(String head, int height)
 	{
-		List <Tail> prods = this.productions.get(head);		
-		
+		List <Tail> prods = this.productions.get(head);
+		 
 		Tail selection=null;
 
 		if(height<=this.hmin) //obtener noterminales
@@ -149,6 +149,42 @@ class BabbleGrammar
 		return prods.get(r);*/
 	}
 
+	
+	private List<BabbleSymbol> ignore( List<BabbleSymbol> prods)
+	{
+		List <Tail> it = this.productions.get("_");
+		if(it==null)return prods;
+
+		Tail ignores = it.get(0);
+		List<BabbleSymbol> ignore_syms= ignores.produce();
+			
+		List <BabbleSymbol> rm=new ArrayList();
+
+		
+		for(BabbleSymbol sym : prods)
+		{
+			if(sym.isTerminal())
+			{
+				for(BabbleSymbol ignore :ignore_syms)
+				{
+					if(ignore.getValue().equals(sym.getValue()))
+					rm.add(sym);
+				}
+
+			}
+		}
+
+		System.out.println(prods);
+		System.out.println(rm);
+		System.out.println("----------------------------");
+
+		for(BabbleSymbol sym : rm)
+		prods.remove(sym);
+
+
+		return prods;
+	}
+
 
 
 	public AST produce()
@@ -161,7 +197,7 @@ class BabbleGrammar
 	{
 		AST node= new AST(symbol);
 		Tail prod = this.getProdStartWith(symbol,height);
-		List <BabbleSymbol> simbols = prod.produce();
+		List <BabbleSymbol> simbols = this.ignore(prod.produce());
 
 		for(BabbleSymbol s:simbols)
 		{

@@ -44,7 +44,7 @@ parser code {:
 /////////////////////////////////////////////////////////////////////////////
 
 
-terminal String TERMINAL,ARROW,PROB,EOL,PIPE,NOTERMINAL,IGNORE,LPARENT,RPARENT,ZERO_ONE,ZERO_MORE,ONE_MORE,CONCAT;
+terminal String TERMINAL,ARROW,PROB,EOL,PIPE,NOTERMINAL,LPARENT,RPARENT,ZERO_ONE,ZERO_MORE,ONE_MORE,CONCAT,IGNORE;
 terminal Double PROBVAL;
 
 non terminal BabbleGrammar  	GRAMMAR;
@@ -55,7 +55,8 @@ nonterminal  List 		SIMBOLS;
 nonterminal  BabbleSymbol 	SIMBOL;
 non terminal RTree 		REGEX;
 non terminal RTree 		EXP;
-non terminal Object 		IGNORE_CHARS;
+non terminal List 		IGNORE_TAILS;
+non terminal Tail		IGNORE_TAIL;
 
 precedence left PIPE;
 precedence left CONCAT;
@@ -63,7 +64,8 @@ precedence left ZERO_MORE,ONE_MORE,ZERO_ONE;
 
 
 GRAMMAR		::=	HEAD:h ARROW TAILS:t EOL {:RESULT= new BabbleGrammar();  RESULT.add(h,t); __grammar=RESULT;:} | 
-			GRAMMAR:g HEAD:h ARROW TAILS:t EOL {: g.add(h,t); RESULT=g;:};
+			GRAMMAR:g HEAD:h ARROW TAILS:t EOL {: g.add(h,t); RESULT=g;:} |
+			GRAMMAR:g IGNORE:i ARROW IGNORE_TAILS:it EOL {: g.add("_",it);RESULT=g;:};
 
 HEAD  		::= 	NOTERMINAL:n {:RESULT= new String(n);:};
 
@@ -91,8 +93,17 @@ EXP             ::=	EXP:e1 PIPE EXP:e2 {:RESULT=new RTree("|"); RESULT.add(e1); 
                       	TERMINAL:t {: RESULT= new RTree(t);:};
 
 //ignore
-//PRODUCTION 	::= 	IGNORE ARROW IGNORE_CHARS EOL;
-//IGNORE_CHARS	::= 	TERMINAL | IGNORE_CHARS PIPE TERMINAL;	
+IGNORE_TAILS    ::= 	IGNORE_TAIL:t {:RESULT=new ArrayList(); RESULT.add(t);:} |
+                        IGNORE_TAILS:ts PIPE IGNORE_TAIL:t {:ts.add(t); RESULT=ts;:};
+
+IGNORE_TAIL	::=	TERMINAL:t {: 
+					List<BabbleSymbol> s = new ArrayList();
+					Terminal st = new Terminal(t);	
+					s.add(st);
+
+					RESULT=new SymbolTail(s); 
+					
+				    :};
 
 
 
