@@ -95,6 +95,57 @@ class BabbleGrammar
 		return grammar;
 	}
 
+  public Map<String,List<Tail>> getproductions()
+        {
+                return this.productions;
+        }
+        //jr
+        public void redefineProb(BabbleGrammar babble)
+        {
+                Map<String,List<Tail>> redefproductions=babble.getproductions();
+                String cabeza=babble.getStart();
+                Set <String> keyset= redefproductions.keySet();
+                List<Object> keys= new ArrayList<Object>(Arrays.asList(keyset.toArray()));
+                keys.remove(cabeza);
+                keys.add(0,cabeza);
+
+                while(!keys.isEmpty())
+                {
+                        String head=(String)keys.remove(0);//la cabeza de redef
+                        List <Tail> prodsRedef=babble.getproductions().get(head);
+                        List <Tail> prods = this.productions.get(head);//busco iguales en mi grammar
+                        for(Tail t : prods)
+                        {
+                                String original="";
+                                List <BabbleSymbol> simbols=t.unparse();
+                                for(BabbleSymbol o : simbols)
+                                {
+                                        original+=o.getValue();
+
+                                }
+                                for(Tail r : prodsRedef)
+                                {
+                                        String redef="";
+                                        List <BabbleSymbol> simbolsredef=r.unparse();
+                                        for(BabbleSymbol s : simbolsredef)
+                                        {
+                                                redef+=s.getValue();
+
+                                        }
+                                        if (redef.compareTo(original)==0)
+                                        {
+                                                //System.out.println("aii"+redef);
+                                                t.setProb(r.getProbability());
+                                        }
+                                }
+                        }
+                }
+
+
+        }
+
+
+
 	
 	public void normalize()
 	{
@@ -198,6 +249,7 @@ class BabbleGrammar
 
 		for(BabbleSymbol s:simbols)
 		{
+			System.out.println("->"+s.getValue());
 			if(s.isTerminal())
 			node.add(s.produce());
 			else

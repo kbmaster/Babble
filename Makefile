@@ -7,13 +7,6 @@ CUP=$(JAVA) -jar $(CUPJAR) <
 CP= .:$(CUPJAR)  
 
 
-all: test
-
-test: out.txt
-	@(diff out.txt out.ok && echo "Test OK!") || echo "Test failed!"
-
-out.txt: Babble.class test.txt
-	$(JAVA) -cp $(CP) Main test.txt > out.txt
 
 Babble.class: Lexer.java parser.java *.java 
 
@@ -30,7 +23,8 @@ compile: Lexer.java  parser.java *.java
 	$(JAVAC) -cp $(CP)  $^
 
 interactive: Babble.class 
-	 $(JAVA) -cp $(CP) Babble -t 10 5 10 ./test/ab.babble
+	 #$(JAVA) -cp $(CP) Babble -u 10 5 10 ./test/redefProbJson.rdp  ./test/json.babble
+	 $(JAVA) -cp $(CP) Babble -t 10 5 10  ./test/babble.babble
 
 jar: *.class
 	$(JAR) cmvf MANIFEST.MF Babble.jar $^

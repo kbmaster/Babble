@@ -18,5 +18,11 @@ abstract class  Tail
 		double normalizeValue=(this.probability*100)/maxProb;
 		this.probability= (double)Math.round(normalizeValue)/100;	
 	}
+
+	protected void setProb(Double newProb)
+        {
+                this.probability=newProb;
+        }
+
 }
 

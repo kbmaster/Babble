@@ -58,6 +58,12 @@ public class Babble
 	babble.normalize();
   }
 	
+  
+   public static void redefProbGrammar(BabbleGrammar original,BabbleGrammar redef)
+  {
+        original.redefineProb(redef);//new
+  }
+
 
 
   public static void printHelp()
@@ -90,6 +96,24 @@ public class Babble
 	{
 		B = Babble.parseGrammar("");
 	}
+
+
+	BabbleGrammar Bredef=null;//Argumento 3 del obligatorio.Pongo aca asi no se normaliza dos veces
+        if(argv.length==6)//jr
+        {
+                String filenameBredef=argv[4]+"";
+                File fredef = new File(filenameBredef);
+                if(fredef.exists() && !fredef.isDirectory())//load input from file
+                {
+                        System.out.println("------Entrada BabbleGrammar para redefinir Probs-------");
+                        Bredef= Babble.parseGrammarFile(filenameBredef);
+                        System.out.println("------Salida BabbleGrammar para redefinir Probs-------");
+                }
+                if(Bredef!=null)//jr
+                {
+                        Babble.redefProbGrammar(B,Bredef);
+                }
+        }
 
 	
 	Babble.normalizeGrammar(B);	

@@ -1,0 +1,29 @@
+GRAMMAR         :     HEAD ':' TAILS ';' |
+                      GRAMMAR HEAD  ':' TAILS ';';
+
+HEAD            :     NOTERMINAL;
+
+TAILS           :     TAIL | TAILS '|' TAIL;
+		      		      	
+TAIL            :     SIMBOLS | SIMBOLS PROB PROBVAL | REGEX | REGEX PROB PROBVAL;
+
+SIMBOLS         :     SIMBOL | SIMBOLS  SIMBOL;
+
+SIMBOL          :     TERMINAL | NOTERMINAL;
+
+REGEX		:     '(' EXP ')';
+EXP             :     TERMINAL |	
+		      EXP '|' EXP2 |
+                      EXP2 '*' |
+                      EXP2 '+' |
+                      EXP2 '?' |
+                      '(' EXP2 ')' |
+                      EXP2 EXP;
+
+EXP2		:TERMINAL;	
+
+
+TERMINAL:('"'('a'|'b'|'c')+'"');
+NOTERMINAL:('A'|'B'|'C');
+PROB:'%prob ';
+PROBVAL:('0.'('1'|'2'|'3'));
