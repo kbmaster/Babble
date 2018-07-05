@@ -174,9 +174,6 @@ class BabbleGrammar
 			}
 		}
 
-		System.out.println(prods);
-		System.out.println(rm);
-		System.out.println("----------------------------");
 
 		for(BabbleSymbol sym : rm)
 		prods.remove(sym);
