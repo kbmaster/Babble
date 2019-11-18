@@ -257,6 +257,29 @@ class BabbleGrammar
 
 		return node;
 	}
+	//Por si se prefiere aca
+	public void normalizeGrammar() throws Exception
+	{  
+	  Map<String,List<Tail>> grammarMap=this.productions;
+	  for(Entry<String, List<Tail>> entry:grammarMap.entrySet()) {
+            //Cantidad de producciones
+	    int catidadTail=entry.getValue().size();
+	    List<Tail> lista=(List<Tail>)entry.getValue();
+	    double sumaTotalProb=0.0;
+	    for(int i=0;i<catidadTail;i++)
+	    {
+		SymbolTail symbolT=(SymbolTail)lista.get(i);
+		sumaTotalProb +=symbolT.getProbability();
+	    }
+	    for(int i=0;i<catidadTail;i++)
+	    {
+		SymbolTail symbolT=(SymbolTail)lista.get(i);
+		symbolT.normalizeProb(sumaTotalProb);
+	    }
+
+	 }
+		
+	}
 
 
 
