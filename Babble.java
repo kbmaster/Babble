@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.util.Map.*;
 
 public class Babble 
 {
@@ -17,6 +18,39 @@ public class Babble
 	parser __parser = new parser(new Lexer(new FileReader(file)));
 	__parser.parse();
 	return __parser.getGrammar();
+  }
+  public static BabbleGrammar normalizeGrammar(BabbleGrammar grammar) throws Exception
+  {  
+	 // System.out.println("entre");
+
+
+	  Map<String,List<Tail>> grammarMap=grammar.getMap();
+
+	  for(Entry<String, List<Tail>> entry:grammarMap.entrySet()) {
+		    //Cantidad de producciones
+	    int catidadTail=entry.getValue().size();
+	    List<Tail> lista=(List<Tail>)entry.getValue();
+	    double sumaTotalProb=0.0;
+	    for(int i=0;i<catidadTail;i++)
+	    {
+		SymbolTail symbolT=(SymbolTail)lista.get(i);
+		sumaTotalProb +=symbolT.getProbability();
+	    }
+	    for(int i=0;i<catidadTail;i++)
+	    {
+		SymbolTail symbolT=(SymbolTail)lista.get(i);
+		symbolT.normalizeProb(sumaTotalProb);
+	    }
+
+	   // for(int i=0;i<catidadTail;i++)
+	    //{
+	   // 	SymbolTail symbolT=(SymbolTail)lista.get(i);
+	  //  	System.out.println("normaNueva:"+symbolT.getProbability());
+	   // }
+
+      }
+      return grammar;
+
   }
 
 
